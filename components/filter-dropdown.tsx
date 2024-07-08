@@ -1,4 +1,4 @@
-
+"use client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,18 +7,38 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
-import { Button } from '@/components/ui/button';
-import { Filter } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Filter } from "lucide-react";
+import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function FilterDropdown() {
+  // status can be 'completed', 'pending', ''
+  const [filterStatus, setFilterStatus] = useState("");
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const hanlderOnChangeStatus = (status: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (status) {
+      params.set("status", status);
+    } else {
+      params.delete("status");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+    setFilterStatus(status);
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          size={'default'}
+          size={"default"}
           className="flex gap-2 text-slate-600"
         >
           <Filter className="h-4 w-4" />
@@ -29,7 +49,10 @@ export default function FilterDropdown() {
       <DropdownMenuContent className="w-16">
         <DropdownMenuLabel>Filtrar por:</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value="">
+        <DropdownMenuRadioGroup
+          value={filterStatus}
+          onValueChange={hanlderOnChangeStatus}
+        >
           <DropdownMenuRadioItem value="">Todos</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="pending">
             Pendente

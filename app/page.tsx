@@ -11,10 +11,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import axios from "axios";
-import { Search } from "lucide-react";
+
 type SearchParamsProps = {
   searchParams?: {
     search?: string;
+    status?: string;
   };
 };
 
@@ -24,6 +25,7 @@ export default async function Component({ searchParams }: SearchParamsProps) {
     {
       params: {
         search: searchParams?.search,
+        status: searchParams?.status,
       },
     }
   );
