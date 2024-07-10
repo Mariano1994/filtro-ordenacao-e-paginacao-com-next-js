@@ -35,7 +35,16 @@ export default function Pagination({ links }: PaginationProps) {
   return (
     <PaginationComponent>
       <PaginationContent>
-        <PaginationItem>
+        <PaginationItem
+          className={`${
+            links[0].url
+              ? "cursor-pointer"
+              : "cursor-not-allowed text-slate-300 hover:cursor-not-allowed hover:text-slate-300"
+          }`}
+          onClick={() =>
+            onChangePage(Number(searchParams.get("page" || 1)) - 1)
+          }
+        >
           <PaginationPrevious />
         </PaginationItem>
         {links.map((link, index) => {
@@ -64,7 +73,16 @@ export default function Pagination({ links }: PaginationProps) {
             </PaginationItem>
           );
         })}
-        <PaginationItem>
+        <PaginationItem
+          className={`${
+            links[links.length - 1]?.url
+              ? "cursor-pointer"
+              : "cursor-not-allowed text-slate-300 hover:cursor-not-allowed hover:text-slate-300"
+          }`}
+          onClick={() =>
+            onChangePage(Number(searchParams.get("page" || 1)) + 1)
+          }
+        >
           <PaginationNext />
         </PaginationItem>
       </PaginationContent>
